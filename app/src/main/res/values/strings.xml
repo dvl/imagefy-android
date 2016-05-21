@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Imagefy</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_new_wish">NewWishActivity</string>
+    <string name="take_a_photo">Take a photo</string>
+    <string name="gallery">Gallery</string>
+    <string name="hint_category">Category</string>
+    <string name="hint_description">Description</string>
+    <string name="send">SEND</string>
 </resources>
