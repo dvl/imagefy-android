@@ -28,13 +28,16 @@ import com.vanhackathon.imagefy.service.WishesService;
 import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
 import com.vanhackathon.imagefy.service.data.auth.Wish;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -87,22 +90,33 @@ public class NewWishActivityFragment extends Fragment {
                 final Wish wish =  new Wish();
                 wish.tags = "tags rodrigo";
                 wish.brief = "brief rodrigo";
-                wish.buget = "100";
+                wish.buget = "2400";
+
 
 
                 Bitmap original = BitmapFactory.decodeFile(mCurrentPhotoPath);
-                int newW = (int) (original.getWidth() * 0.25);
-                int newH = (int) (original.getHeight() * 0.25);
+                int newW = (int) (original.getWidth() * 0.15);
+                int newH = (int) (original.getHeight() * 0.15);
                 Bitmap resized = Bitmap.createScaledBitmap(original, newW, newH, false);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 resized.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                 byte[] b = baos.toByteArray();
 
-                wish.photo = Base64.encodeToString(b, Base64.DEFAULT);
 //                Call<Wish> call = WishesService.getInstance(LocalLoginManager.loginToken(getContext())).imagefyWishesApi.add(wish);
 
-                RequestBody photo = RequestBody.create(MediaType.parse("image/jpeg"), new File(mCurrentPhotoPath));
-                Call<Wish> call = WishesService.getInstance(LocalLoginManager.loginToken(getContext())).imagefyWishesApi.uploadFile(photo, "1.00");
+                RequestBody photo = RequestBody.create(MediaType.parse("multipart/form-data"), b);
+
+
+                MultipartBody.Part body = MultipartBody.Part.createFormData("photo", "file.png", photo);
+
+                RequestBody brief = RequestBody.create(MediaType.parse("multipart/form-data"), wish.brief);
+                RequestBody budget = RequestBody.create(MediaType.parse("multipart/form-data"), wish.buget);
+
+                Call<Wish> call = WishesService.getInstance(
+                        LocalLoginManager
+                                .loginToken(getContext()))
+                        .imagefyWishesApi
+                        .uploadFile(body, budget, brief);
 
                 call.enqueue(new Callback<Wish>() {
                     @Override

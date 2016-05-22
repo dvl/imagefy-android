@@ -6,6 +6,7 @@ import com.vanhackathon.imagefy.service.data.auth.Wish;
 import java.io.IOException;
 
 import okhttp3.Interceptor;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -14,6 +15,8 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -68,6 +71,6 @@ public class WishesService {
 
         @Multipart
         @POST("/api/v1/wishes/")
-        Call<Wish> uploadFile(@Part("photo") RequestBody image, @Part("buget") String budget);
+        Call<Wish> uploadFile(@Part MultipartBody.Part image, @Part("buget") RequestBody budget, @Part("brief") RequestBody brief);
     }
 }
