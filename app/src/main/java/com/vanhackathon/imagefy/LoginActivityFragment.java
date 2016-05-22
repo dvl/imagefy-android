@@ -14,6 +14,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.vanhackathon.imagefy.service.AuthService;
 import com.vanhackathon.imagefy.service.data.auth.FacebookLoginData;
 import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
 
@@ -67,7 +68,6 @@ public class LoginActivityFragment extends Fragment {
                         LoginManager.getInstance().logOut();
                     }
                 });
-
             }
 
             @Override

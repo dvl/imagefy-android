@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vanhackathon.imagefy.service.data.auth.Wish;
+
 /**
  * A placeholder fragment containing a simple view.
  */

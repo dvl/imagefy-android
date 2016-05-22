@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.vanhackathon.imagefy.service.data.auth.Wish;
 
 import java.util.ArrayList;
 

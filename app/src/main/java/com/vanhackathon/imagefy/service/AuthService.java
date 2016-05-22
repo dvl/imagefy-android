@@ -1,8 +1,14 @@
-package com.vanhackathon.imagefy;
+package com.vanhackathon.imagefy.service;
 
 import com.vanhackathon.imagefy.service.data.auth.FacebookLoginData;
 import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,7 +30,7 @@ public class AuthService {
     }
 
     public static synchronized AuthService getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new AuthService();
             instance.init();
         }
@@ -41,12 +47,8 @@ public class AuthService {
     }
 
     public interface ImagefyAuthApi {
-
         @Headers("content-type: \"application/json\"")
         @POST("/api/v1/auth/facebook/")
         Call<LoginResponse> facebook(@Body FacebookLoginData data);
-
-//        @GET("movie/{id}/reviews")
-//        Call<Reviews> reviews(@Path("id") String id, @Query(API_KEY) String apiKey);
     }
 }

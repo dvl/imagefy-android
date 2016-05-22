@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,19 +22,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.facebook.login.LoginManager;
+import com.vanhackathon.imagefy.service.AuthService;
+import com.vanhackathon.imagefy.service.WishesService;
+import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
+import com.vanhackathon.imagefy.service.data.auth.Wish;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class NewWishActivityFragment extends Fragment {
-
+    private static final String TAG = "WISH";
     static final int REQUEST_TAKE_PHOTO = 111;
     String mCurrentPhotoPath;
     private ImageView image1;
+    private View saveButton;
 
     public NewWishActivityFragment() {
     }
@@ -63,6 +76,39 @@ public class NewWishActivityFragment extends Fragment {
             image1.setVisibility(View.VISIBLE);
             image1.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
         }
+
+        saveButton = rootView.findViewById(R.id.button_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveButton.setEnabled(false);
+                final Wish wish =  new Wish();
+                wish.tags = "tags rodrigo";
+                wish.brief = "brief rodrigo";
+                wish.buget = "100";
+
+                Bitmap bm = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                byte[] b = baos.toByteArray();
+
+                wish.photo = Base64.encodeToString(b, Base64.DEFAULT);
+                Call<Wish> call = WishesService.getInstance(LocalLoginManager.loginToken(getContext())).imagefyWishesApi.add(wish);
+
+                call.enqueue(new Callback<Wish>() {
+                    @Override
+                    public void onResponse(Call<Wish> call, Response<Wish> response) {
+                        Log.d(TAG, "response: " + response);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Wish> call, Throwable t) {
+                        Log.d(TAG, "fail", t);
+                        saveButton.setEnabled(true);
+                    }
+                });
+            }
+        });
 
         return rootView;
     }
