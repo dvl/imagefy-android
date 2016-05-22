@@ -1,6 +1,7 @@
 package com.vanhackathon.imagefy;
 
 import com.vanhackathon.imagefy.service.data.auth.FacebookLoginData;
+import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -43,7 +44,7 @@ public class AuthService {
 
         @Headers("content-type: \"application/json\"")
         @POST("/api/v1/auth/facebook/")
-        Call<String> facebook(@Body FacebookLoginData data);
+        Call<LoginResponse> facebook(@Body FacebookLoginData data);
 
 //        @GET("movie/{id}/reviews")
 //        Call<Reviews> reviews(@Path("id") String id, @Query(API_KEY) String apiKey);

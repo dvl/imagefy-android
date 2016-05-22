@@ -3,6 +3,7 @@ package com.vanhackathon.imagefy;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.vanhackathon.imagefy.service.data.auth.FacebookLoginData;
+import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +26,7 @@ import retrofit2.Response;
  */
 public class LoginActivityFragment extends Fragment {
 
+    private static final String TAG = "LOGIN";
     private CallbackManager callbackManager;
     private LoginButton loginButton;
 
@@ -49,17 +52,17 @@ public class LoginActivityFragment extends Fragment {
                 FacebookLoginData facebook = new FacebookLoginData();
                 facebook.access_token = token;
                 facebook.code = code;
-                Call<String> call = AuthService.getInstance().imagefyAuthApi.facebook(facebook);
+                Call<LoginResponse> call = AuthService.getInstance().imagefyAuthApi.facebook(facebook);
 
-                call.enqueue(new Callback<String>() {
+                call.enqueue(new Callback<LoginResponse>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        String loginToken = response.body();
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        String loginToken = response.body().key;
                         login(loginToken);
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
                         loginButton.setVisibility(View.VISIBLE);
                         LoginManager.getInstance().logOut();
                     }
@@ -80,6 +83,7 @@ public class LoginActivityFragment extends Fragment {
     }
 
     private void login(String login) {
+        Log.d(TAG, "login: " + login);
         LocalLoginManager.logeIn(getContext(), login);
 
         Intent intent = new Intent(getContext(), MainActivity.class);

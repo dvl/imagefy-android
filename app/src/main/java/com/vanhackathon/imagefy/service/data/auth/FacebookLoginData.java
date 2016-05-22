@@ -9,8 +9,6 @@ package com.vanhackathon.imagefy.service.data.auth;
 //"code": ""
 //}
 public class FacebookLoginData {
-
     public String access_token;
     public String code;
-
 }
