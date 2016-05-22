@@ -2,8 +2,11 @@ package com.vanhackathon.imagefy.service;
 
 import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
 import com.vanhackathon.imagefy.service.data.auth.Wish;
+import com.vanhackathon.imagefy.service.data.auth.WishesList;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
@@ -17,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -66,8 +70,8 @@ public class WishesService {
 
     public interface ImagefyWishesApi {
         @Headers("content-type: \"application/json\"")
-        @POST("/api/v1/wishes/")
-        Call<Wish> add(@Body Wish data);
+        @GET("/api/v1/wishes/")
+        Call<List<Wish>> get();
 
         @Multipart
         @POST("/api/v1/wishes/")

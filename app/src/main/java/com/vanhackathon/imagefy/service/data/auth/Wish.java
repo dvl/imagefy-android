@@ -13,4 +13,17 @@ public class Wish {
     public String photo;
     public String brief;
     public String buget;
+
+    @Override
+    public String toString() {
+        return "Wish{" +
+                "id=" + id +
+                ", offers=" + offers +
+                ", owner=" + owner +
+                ", tags='" + tags + '\'' +
+                ", photo='" + photo + '\'' +
+                ", brief='" + brief + '\'' +
+                ", buget='" + buget + '\'' +
+                '}';
+    }
 }

@@ -5,7 +5,7 @@
     <string name="title_activity_new_wish">NewWishActivity</string>
     <string name="take_a_photo">Take a photo</string>
     <string name="gallery">Gallery</string>
-    <string name="hint_category">Category</string>
+    <string name="hint_category">Budget</string>
     <string name="hint_description">Description</string>
     <string name="send">SEND</string>
 
@@ -13,4 +13,6 @@
     <string name="fb_login_protocol_scheme">fb1740041919614241</string>
     <string name="title_activity_login">Imagefy</string>
     <string name="shared_preference">shared_preference</string>
+    <string name="save_wish_error">Error processing request. Try again.</string>
+    <string name="list_error">Ops! Try again.</string>
 </resources>

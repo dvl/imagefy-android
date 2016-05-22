@@ -8,4 +8,14 @@ public class User {
     public String last_name;
     public String email;
     public Profile profile;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", email='" + email + '\'' +
+                ", profile=" + profile +
+                '}';
+    }
 }

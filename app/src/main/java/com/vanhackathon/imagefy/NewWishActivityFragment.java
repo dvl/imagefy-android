@@ -20,7 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.vanhackathon.imagefy.service.AuthService;
@@ -52,6 +54,8 @@ public class NewWishActivityFragment extends Fragment {
     String mCurrentPhotoPath;
     private ImageView image1;
     private View saveButton;
+    private EditText budget;
+    private EditText brief;
 
     public NewWishActivityFragment() {
     }
@@ -82,17 +86,17 @@ public class NewWishActivityFragment extends Fragment {
             image1.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
         }
 
+        budget = (EditText) rootView.findViewById(R.id.input_category);
+        brief = (EditText) rootView.findViewById(R.id.input_description);
+
         saveButton = rootView.findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveButton.setEnabled(false);
                 final Wish wish =  new Wish();
-                wish.tags = "tags rodrigo";
-                wish.brief = "brief rodrigo";
-                wish.buget = "2400";
-
-
+                wish.brief = brief.getText().toString();
+                wish.buget = budget.getText().toString();
 
                 Bitmap original = BitmapFactory.decodeFile(mCurrentPhotoPath);
                 int newW = (int) (original.getWidth() * 0.15);
@@ -102,12 +106,9 @@ public class NewWishActivityFragment extends Fragment {
                 resized.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                 byte[] b = baos.toByteArray();
 
-//                Call<Wish> call = WishesService.getInstance(LocalLoginManager.loginToken(getContext())).imagefyWishesApi.add(wish);
-
                 RequestBody photo = RequestBody.create(MediaType.parse("multipart/form-data"), b);
 
-
-                MultipartBody.Part body = MultipartBody.Part.createFormData("photo", "file.png", photo);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("photo", mCurrentPhotoPath, photo);
 
                 RequestBody brief = RequestBody.create(MediaType.parse("multipart/form-data"), wish.brief);
                 RequestBody budget = RequestBody.create(MediaType.parse("multipart/form-data"), wish.buget);
@@ -122,11 +123,17 @@ public class NewWishActivityFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Wish> call, Response<Wish> response) {
                         Log.d(TAG, "response: " + response);
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);
+
+                        getActivity().finish();
                     }
 
                     @Override
                     public void onFailure(Call<Wish> call, Throwable t) {
                         Log.d(TAG, "fail", t);
+                        Toast.makeText(getActivity(), getString(R.string.save_wish_error),
+                                Toast.LENGTH_LONG).show();
                         saveButton.setEnabled(true);
                     }
                 });

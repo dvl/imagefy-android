@@ -1,21 +1,35 @@
 package com.vanhackathon.imagefy;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.vanhackathon.imagefy.service.WishesService;
 import com.vanhackathon.imagefy.service.data.auth.Wish;
+import com.vanhackathon.imagefy.service.data.auth.WishesList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment implements WishesAdapter.OnItemSelectedListener {
 
+    private static final String TAG = "MAIN";
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayout;
     private WishesAdapter mAdapter;
@@ -47,7 +61,40 @@ public class MainActivityFragment extends Fragment implements WishesAdapter.OnIt
     }
 
     @Override
-    public void onItemSelected(Wish wish, int position) {
+    public void onResume() {
+        super.onResume();
 
+        update();
+    }
+
+    @Override
+    public void onItemSelected(Wish wish, int position) {
+    }
+
+    private void update() {
+        Call<List<Wish>> call = WishesService.getInstance(
+                LocalLoginManager
+                        .loginToken(getContext()))
+                .imagefyWishesApi
+                .get();
+
+        call.enqueue(new Callback<List<Wish>>() {
+            @Override
+            public void onResponse(Call<List<Wish>> call, Response<List<Wish>> response) {
+                Log.d(TAG, "response: " + response);
+                if(response.body() != null) {
+                    ArrayList<Wish> res = new ArrayList<Wish>(response.body());
+                    Log.d(TAG, res.toString());
+                    mAdapter.clearAll();
+                    mAdapter.addAll(res);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Wish>> call, Throwable t) {
+                Log.d(TAG, "fail", t);
+                Toast.makeText(getActivity(), getString(R.string.list_error), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

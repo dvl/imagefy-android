@@ -56,8 +56,8 @@ public class WishesAdapter extends RecyclerView.Adapter<WishesAdapter.ViewHolder
         // - replace the contents of the view with that element
         final Wish wish = items.get(position);
 
-//        String path = "http://image.tmdb.org/t/p/w185/" + movie.getPosterPath();
-//        Picasso.with(mContext).load(path).into(holder.img);
+        holder.title.setText(wish.brief);
+        Picasso.with(mContext).load(wish.photo).into(holder.img);
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
