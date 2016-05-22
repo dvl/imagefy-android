@@ -8,13 +8,16 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * Created by rodrigo.alencar on 4/22/16.
@@ -43,7 +46,7 @@ public class WishesService {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request.Builder ongoing = chain.request().newBuilder();
-                        ongoing.addHeader("Authorization", token);
+                        ongoing.addHeader("Authorization", "Token " + token);
 
                         return chain.proceed(ongoing.build());
                     }
@@ -62,5 +65,9 @@ public class WishesService {
         @Headers("content-type: \"application/json\"")
         @POST("/api/v1/wishes/")
         Call<Wish> add(@Body Wish data);
+
+        @Multipart
+        @POST("/api/v1/wishes/")
+        Call<Wish> uploadFile(@Part("photo") RequestBody image, @Part("buget") String budget);
     }
 }

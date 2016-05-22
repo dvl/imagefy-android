@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,13 +89,20 @@ public class NewWishActivityFragment extends Fragment {
                 wish.brief = "brief rodrigo";
                 wish.buget = "100";
 
-                Bitmap bm = BitmapFactory.decodeFile(mCurrentPhotoPath);
+
+                Bitmap original = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                int newW = (int) (original.getWidth() * 0.25);
+                int newH = (int) (original.getHeight() * 0.25);
+                Bitmap resized = Bitmap.createScaledBitmap(original, newW, newH, false);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                resized.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                 byte[] b = baos.toByteArray();
 
                 wish.photo = Base64.encodeToString(b, Base64.DEFAULT);
-                Call<Wish> call = WishesService.getInstance(LocalLoginManager.loginToken(getContext())).imagefyWishesApi.add(wish);
+//                Call<Wish> call = WishesService.getInstance(LocalLoginManager.loginToken(getContext())).imagefyWishesApi.add(wish);
+
+                RequestBody photo = RequestBody.create(MediaType.parse("image/jpeg"), new File(mCurrentPhotoPath));
+                Call<Wish> call = WishesService.getInstance(LocalLoginManager.loginToken(getContext())).imagefyWishesApi.uploadFile(photo, "1.00");
 
                 call.enqueue(new Callback<Wish>() {
                     @Override
