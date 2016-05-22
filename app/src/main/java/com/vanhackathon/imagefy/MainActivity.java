@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
 
-        if(!LocalLoginManager.loggedIn(this)) {
+        if(!LocalLoginManager.isLoggedIn(this)) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();

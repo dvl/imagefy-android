@@ -9,8 +9,8 @@
     <string name="hint_description">Description</string>
     <string name="send">SEND</string>
 
-    <string name="facebook_app_id">223403048046478</string>
-    <string name="fb_login_protocol_scheme">fb223403048046478</string>
+    <string name="facebook_app_id">1740041919614241</string>
+    <string name="fb_login_protocol_scheme">fb1740041919614241</string>
     <string name="title_activity_login">Imagefy</string>
     <string name="shared_preference">shared_preference</string>
 </resources>

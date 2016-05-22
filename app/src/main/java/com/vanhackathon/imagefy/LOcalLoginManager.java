@@ -10,10 +10,10 @@ public class LocalLoginManager {
 
     public static final String LOGGED = "logged";
 
-    public static void logeIn(Context context) {
+    public static void logeIn(Context context, String loginToken) {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(LOGGED, true);
+        editor.putString(LOGGED, loginToken);
         editor.commit();
     }
 
@@ -24,8 +24,13 @@ public class LocalLoginManager {
         editor.commit();
     }
 
-    public static boolean loggedIn(Context context) {
+    public static boolean isLoggedIn(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_preference), Context.MODE_PRIVATE);
-        return sharedPref.getBoolean("logged", false);
+        return sharedPref.getString("logged", null) != null;
+    }
+
+    public static String loginToken(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.shared_preference), Context.MODE_PRIVATE);
+        return sharedPref.getString("logged", null);
     }
 }

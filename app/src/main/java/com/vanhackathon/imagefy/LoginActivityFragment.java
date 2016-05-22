@@ -13,6 +13,11 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.vanhackathon.imagefy.service.data.auth.FacebookLoginData;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -41,14 +46,25 @@ public class LoginActivityFragment extends Fragment {
                 String token = loginResult.getAccessToken().getToken();
                 String code = loginResult.getAccessToken().getUserId();
 
-                LocalLoginManager.logeIn(getContext());
+                FacebookLoginData facebook = new FacebookLoginData();
+                facebook.access_token = token;
+                facebook.code = code;
+                Call<String> call = AuthService.getInstance().imagefyAuthApi.facebook(facebook);
 
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String loginToken = response.body();
+                        login(loginToken);
+                    }
 
-                if(getActivity() != null) {
-                    getActivity().finish();
-                }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        loginButton.setVisibility(View.VISIBLE);
+                        LoginManager.getInstance().logOut();
+                    }
+                });
+
             }
 
             @Override
@@ -61,6 +77,17 @@ public class LoginActivityFragment extends Fragment {
                 // App code
             }
         });
+    }
+
+    private void login(String login) {
+        LocalLoginManager.logeIn(getContext(), login);
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
+
+        if(getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
     @Override
