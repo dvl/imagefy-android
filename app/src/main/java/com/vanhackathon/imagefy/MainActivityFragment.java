@@ -1,6 +1,5 @@
 package com.vanhackathon.imagefy;
 
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -14,10 +13,8 @@ import android.widget.Toast;
 
 import com.vanhackathon.imagefy.service.WishesService;
 import com.vanhackathon.imagefy.service.data.auth.Wish;
-import com.vanhackathon.imagefy.service.data.auth.WishesList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -73,7 +70,7 @@ public class MainActivityFragment extends Fragment implements WishesAdapter.OnIt
 
     private void update() {
         Call<List<Wish>> call = WishesService.getInstance(
-                LocalLoginManager
+                LocalLogin
                         .loginToken(getContext()))
                 .imagefyWishesApi
                 .get();

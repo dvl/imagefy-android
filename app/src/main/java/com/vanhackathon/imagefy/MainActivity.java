@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
 
-        if(!LocalLoginManager.isLoggedIn(this)) {
+        if(!LocalLogin.isLoggedIn(this)) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_logout) {
             LoginManager.getInstance().logOut();
-            LocalLoginManager.logeOut(this);
+            LocalLogin.logeOut(this);
 
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

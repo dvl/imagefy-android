@@ -1,20 +1,15 @@
 package com.vanhackathon.imagefy;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,17 +19,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
-import com.vanhackathon.imagefy.service.AuthService;
 import com.vanhackathon.imagefy.service.WishesService;
-import com.vanhackathon.imagefy.service.data.auth.LoginResponse;
 import com.vanhackathon.imagefy.service.data.auth.Wish;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -114,7 +104,7 @@ public class NewWishActivityFragment extends Fragment {
                 RequestBody budget = RequestBody.create(MediaType.parse("multipart/form-data"), wish.buget);
 
                 Call<Wish> call = WishesService.getInstance(
-                        LocalLoginManager
+                        LocalLogin
                                 .loginToken(getContext()))
                         .imagefyWishesApi
                         .uploadFile(body, budget, brief);

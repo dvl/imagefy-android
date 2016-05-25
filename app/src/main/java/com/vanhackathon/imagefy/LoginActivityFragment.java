@@ -84,7 +84,7 @@ public class LoginActivityFragment extends Fragment {
 
     private void login(String login) {
         Log.d(TAG, "login: " + login);
-        LocalLoginManager.logeIn(getContext(), login);
+        LocalLogin.logeIn(getContext(), login);
 
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
